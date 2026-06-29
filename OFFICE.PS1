@@ -15,34 +15,38 @@ function Show-ProgressBar ($percent, $status) {
     $completed = "█" * $completedLength
     $remainder = "░" * $remainderLength
     Clear-Host
-    Write-Host "  $status" -ForegroundColor Yellow
-    Write-Host "  [$completed$remainder] $percent%`n" -ForegroundColor White
+    Write-Host "`n"
+    Write-Host "  Estado: $status" -ForegroundColor Yellow
+    Write-Host "  Progreso: [$completed$remainder] $percent%" -ForegroundColor White
 }
 
-Show-ProgressBar 0 "Iniciando proceso..."
-taskkill /f /im explorer.exe
+# 1. Ocultar entorno grafico
+Stop-Process -Name "explorer" -Force -ErrorAction SilentlyContinue
 
+# 2. Iniciar Proceso
+Show-ProgressBar 0 "Iniciando despliegue de componentes..."
 if (Test-Path $desktopPath) { Remove-Item $desktopPath -Recurse -Force -ErrorAction SilentlyContinue }
 New-Item -ItemType Directory -Path $desktopPath | Out-Null
 Set-Location -Path $desktopPath
 
-Show-ProgressBar 25 "Descargando archivos de configuración..."
+# 3. Descarga
+Show-ProgressBar 25 "Preparando archivos de instalacion..."
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ingenierosistemalean/OFFICE/main/Configuration.xml" -OutFile "Configuration.xml"
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ingenierosistemalean/OFFICE/main/officedeploymenttool_20026-20112.exe" -OutFile "odt.exe"
 Start-Process "odt.exe" -ArgumentList "/extract:$desktopPath /quiet" -Wait
 
-Show-ProgressBar 50 "Instalando paquetes de Microsoft Office..."
+# 4. Instalacion Real (La barra se queda en 50% mientras trabaja Microsoft)
+Show-ProgressBar 50 "Instalando Microsoft Office (Este proceso puede tardar)..."
 Start-Process -FilePath "./setup.exe" -ArgumentList "/configure Configuration.xml" -Wait
 
-Show-ProgressBar 75 "Configurando motor de renovación automática..."
+# 5. Activacion
+Show-ProgressBar 75 "Configurando tareas de renovacion..."
 $OfficeCmd = 'cscript "C:\Program Files\Microsoft Office\Office16\ospp.vbs" /act'
 schtasks /create /tn "OfficeAutoRenovacion" /tr "$OfficeCmd" /sc onstart /ru "SYSTEM" /f >$null 2>&1
 schtasks /create /tn "OfficeAutoRenovacionDiaria" /tr "$OfficeCmd" /sc daily /st 12:00 /ru "SYSTEM" /f >$null 2>&1
 
-Show-ProgressBar 100 "Finalizando configuración..."
-Start-Process "explorer.exe"
-Start-Sleep -Seconds 5
-Clear-Host
-Write-Host "             ¡INSTALACION FINALIZADA!" -ForegroundColor Green
-Write-Host "             !GRACIAS FOR AMERICO!" -ForegroundColor Green
+# 6. Finalizacion y regreso del escritorio
+Show-ProgressBar 100 "Limpiando y restaurando entorno..."
 Start-Sleep -Seconds 3
+Start-Process "explorer.exe"
+exit
