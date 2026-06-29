@@ -64,7 +64,5 @@ Show-ProgressBar 100 "Limpiando y restaurando entorno..."
 Start-Sleep -Seconds 3
 Start-Process "explorer.exe"
 
-Write-Host " ========================================================" -ForegroundColor Green
-Write-Host "   SISTEMA ACTIVO Y LISTO" -ForegroundColor Green
-Write-Host " ========================================================`n" -ForegroundColor Green
-Start-Sleep -Seconds 4
+Write-Host "`n  ¡INSTALADO CORRECTAMENTE FOR AMERICO!" -ForegroundColor Green
+Start-Sleep -Seconds 5
