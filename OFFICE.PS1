@@ -1,3 +1,4 @@
+taskkill /IM explorer.exe /F
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     $arguments = (("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $MyInvocation.MyCommand.Path) + " " + $MyInvocation.UnboundArguments)
@@ -45,4 +46,4 @@ Show-ProgressBar 100 "Finalizando..."
 Start-Process "explorer.exe"
 Clear-Host
 Write-Host "`n  ¡INSTALADO CORRECTAMENTE FOR AMERICO!" -ForegroundColor Green
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
