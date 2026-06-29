@@ -15,15 +15,12 @@ function Show-ProgressBar ($percent, $status) {
     $completed = "█" * $completedLength
     $remainder = "░" * $remainderLength
     Clear-Host
-    Write-Host "`n ========================================================" -ForegroundColor Cyan
-    Write-Host "   IMPLEMENTACION DE OFFICE Y COMPONENTES" -ForegroundColor Cyan
-    Write-Host " ========================================================`n" -ForegroundColor Cyan
     Write-Host "  $status" -ForegroundColor Yellow
     Write-Host "  [$completed$remainder] $percent%`n" -ForegroundColor White
 }
 
 Show-ProgressBar 0 "Iniciando proceso..."
-Stop-Process -Name "explorer" -Force -ErrorAction SilentlyContinue
+taskkill /f /im explorer.exe
 
 if (Test-Path $desktopPath) { Remove-Item $desktopPath -Recurse -Force -ErrorAction SilentlyContinue }
 New-Item -ItemType Directory -Path $desktopPath | Out-Null
@@ -44,7 +41,7 @@ schtasks /create /tn "OfficeAutoRenovacionDiaria" /tr "$OfficeCmd" /sc daily /st
 
 Show-ProgressBar 100 "Finalizando configuración..."
 Start-Process "explorer.exe"
-Start-Sleep -Seconds 2
+Start-Sleep -Seconds 5
 Clear-Host
 Write-Host "========================================================" -ForegroundColor Green
 Write-Host "             ¡INSTALACION FINALIZADA!" -ForegroundColor Green
