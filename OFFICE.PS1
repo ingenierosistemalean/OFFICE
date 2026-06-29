@@ -43,7 +43,6 @@ Show-ProgressBar 100 "Finalizando configuración..."
 Start-Process "explorer.exe"
 Start-Sleep -Seconds 5
 Clear-Host
-Write-Host "========================================================" -ForegroundColor Green
 Write-Host "             ¡INSTALACION FINALIZADA!" -ForegroundColor Green
-Write-Host "========================================================" -ForegroundColor Green
+Write-Host "             !GRACIAS FOR AMERICO!" -ForegroundColor Green
 Start-Sleep -Seconds 3
