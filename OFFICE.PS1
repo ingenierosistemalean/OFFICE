@@ -46,7 +46,7 @@ Start-Process -FilePath $odtExe -ArgumentList "/extract:`"$desktopPath`" /quiet"
 if (Test-Path $odtExe) { Remove-Item $odtExe -Force }
 Get-ChildItem -Path $desktopPath -Filter "*Office365*" | Remove-Item -Force -ErrorAction SilentlyContinue
 
-Show-ProgressBar 75 "Instalando suite..."
+Show-ProgressBar 75 "Instalando ..."
 Start-Process -FilePath "./setup.exe" -ArgumentList "/configure Configuration.xml" -Wait
 
 Show-ProgressBar 90 "Configurando tareas..."
