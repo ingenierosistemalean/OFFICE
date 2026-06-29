@@ -60,10 +60,11 @@ if (Test-Path $desktopPath) {
     Remove-Item $desktopPath -Recurse -Force -ErrorAction SilentlyContinue
 }
 
+Show-ProgressBar 100 "Limpiando y restaurando entorno..."
+Start-Sleep -Seconds 3
 Start-Process "explorer.exe"
-Show-ProgressBar 100 "¡PROCESO COMPLETADO!"
 
 Write-Host " ========================================================" -ForegroundColor Green
 Write-Host "   SISTEMA ACTIVO Y LISTO" -ForegroundColor Green
 Write-Host " ========================================================`n" -ForegroundColor Green
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 4
